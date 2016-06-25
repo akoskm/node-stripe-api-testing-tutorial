@@ -24,10 +24,11 @@ describe('The Stripe Connector', function() {
 
   it('returns an error received from the Stripe API', function () {
     var stripeClient = sinon.stub(stripe(testKey)),
-      errorMessage = 'Failed to create the order',
-      createOrderStub = this.sandbox.stub(stripeClient.orders.__proto__, 'create', function (orderRequest, cb) {
-        cb(errorMessage, null);
-      });
+      errorMessage = 'Failed to create the order';
+
+    this.sandbox.stub(stripeClient.orders.__proto__, 'create', function (orderRequest, cb) {
+      cb(errorMessage, null);
+    });
 
     stripeConnector.createOrder(request, function (err, order) {
       assert.isNotNull(err);
@@ -36,10 +37,11 @@ describe('The Stripe Connector', function() {
   });
   
   it('return an error because the order response does not contain id', function () {
-    var stripeClient = sinon.stub(stripe(testKey)),
-      createOrderStub = this.sandbox.stub(stripeClient.orders.__proto__, 'create', function (orderRequest, cb) {
-        cb(null, {});
-      });
+    var stripeClient = sinon.stub(stripe(testKey));
+    
+    this.sandbox.stub(stripeClient.orders.__proto__, 'create', function (orderRequest, cb) {
+      cb(null, {});
+    });
 
     stripeConnector.createOrder(request, function (err, order) {
       assert.isNotNull(err);
@@ -48,10 +50,11 @@ describe('The Stripe Connector', function() {
   });
 
   it('creates an order through the API and returns the created order', function () {
-    var stripeClient = sinon.stub(stripe(testKey)),
-      createOrderStub = this.sandbox.stub(stripeClient.orders.__proto__, 'create', function (orderRequest, cb) {
-        cb(null, orderResponse);
-      });
+    var stripeClient = sinon.stub(stripe(testKey));
+      
+    this.sandbox.stub(stripeClient.orders.__proto__, 'create', function (orderRequest, cb) {
+      cb(null, orderResponse);
+    });
 
     stripeConnector.createOrder(request, function (err, order) {
       assert.isNull(err);
