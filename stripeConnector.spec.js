@@ -2,7 +2,7 @@ var stripeConnector = require('./stripeConnector'),
   assert = require('chai').assert,
   stripe = require('stripe'),
   sinon = require('sinon'),
-  testKey = 'sk_test_beutyrG1DRWiK5SKC0A8H6q6';
+  testKey = 'test';
 
 describe('The Stripe Connector', function() {
 

@@ -1,5 +1,5 @@
 var stripe = require('stripe')(
-  'sk_test_beutyrG1DRWiK5SKC0A8H6q6'
+  'test'
 );
 
 module.exports = {
