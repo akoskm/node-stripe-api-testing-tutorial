@@ -61,4 +61,44 @@ describe('The Stripe Connector', function() {
       assert.equal(orderResponse, order);
     });
   });
+
+  it('returns an array of errors if email is missing from the request', function () {
+    var stripeClient = sinon.stub(stripe(testKey)),
+      invalidRequest = {
+        items: ['silky-sunscreen', 'coconut-cream']
+      };
+
+    stripeConnector.createOrder(invalidRequest, function (err, order) {
+      assert.isNotNull(err);
+      assert.equal(1, err.length);
+      assert.equal(err[0], 'Email is required.');
+    });
+  });
+
+  it('returns an array of errors if no items in the request', function () {
+    var stripeClient = sinon.stub(stripe(testKey)),
+      invalidRequest = {
+        email: 'user@example.com',
+        items: []
+      };
+
+    stripeConnector.createOrder(invalidRequest, function (err, order) {
+      assert.isNotNull(err);
+      assert.equal(1, err.length);
+      assert.equal(err[0], 'No items found.');
+    });
+  });
+
+  it('returns an array of errors if no items and no email in the request', function () {
+    var stripeClient = sinon.stub(stripe(testKey)),
+      invalidRequest = {
+      };
+
+    stripeConnector.createOrder(invalidRequest, function (err, order) {
+      assert.isNotNull(err);
+      assert.equal(2, err.length);
+      assert.equal(err[0], 'No items found.');
+      assert.equal(err[1], 'Email is required.');
+    });
+  });
 });
